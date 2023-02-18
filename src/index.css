@@ -23,14 +23,6 @@
   justify-content: space-between;
 }
 
-@media (max-width: 450px) {
-  .btn-box {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
 .success-msg {
   width: 100%;
   padding: 14px;
@@ -59,12 +51,7 @@
   background-color: #f6f6f6;
 }
 
-@media (max-width: 450px) {
-  .navbar {
-    flex-direction: column;
-    justify-content: center;
-  }
-}
+
 
 .navbar .logo {
   width: 150px;
@@ -84,23 +71,10 @@
   align-items: center;
 }
 
-@media (max-width: 450px) {
-  .navbar .rightside {
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 20px;
-    margin-right: 0px;
-  }
-}
+
 
 .navbar .rightside div {
   margin: 0px 10px;
-}
-
-@media (max-width: 450px) {
-  .navbar .rightside div {
-    margin: 10px 0px;
-  }
 }
 
 .navbar .rightside div .navlink {
@@ -137,11 +111,7 @@
   box-shadow: 5px 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
-@media (min-width: 768px) {
-  .product {
-    width: 300px;
-  }
-}
+
 
 .product .product-img {
   width: 180px;
@@ -294,12 +264,18 @@
   align-items: center;
 }
 
-.filter-box {
+.sorting-filter-section {
   display: flex;
   flex-direction: column;
   flex: 0.7;
   padding-left: 15px;
   padding-top: 5px;
+  gap: 2rem;
+}
+
+.filter-box {
+  display: flex;
+  flex-direction: column;
 }
 
 .filter-box h6 {
@@ -313,27 +289,54 @@
   font-size: 14px;
 }
 
-.filter-box span.ElectronicDevices {
+.search{
+  padding: 6px;
+}
+
+.filter-box span.electronics {
   color: #e00a02;
 }
 
-.filter-box span.MobileAccessories {
+.filter-box span.jewelery {
   color: #e00a02;
 }
 
-.filter-box span.TVAndHomeAppliances {
+.filter-box span.mens-clothing {
   color: #e00a02;
 }
 
-.filter-box span.SportsAndOutdoors {
+.filter-box span.womens-clothing {
   color: #e00a02;
 }
 
-.filter-box span.HomeAndLifestyle,
-.MensFashion,
-.WatchesBagAndJewellery,
-.Groceries {
-  color: #e00a02;
+@media (max-width: 450px) {
+  .btn-box {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .navbar .rightside {
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 450px) {
+  .navbar .rightside div {
+    margin: 10px 0px;
+  }
+}
+
+@media (max-width: 450px) {
+  .navbar {
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 540px) {

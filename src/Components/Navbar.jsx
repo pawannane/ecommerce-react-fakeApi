@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../Images/cart.png'
 import Icon from 'react-icons-kit'
 import { shoppingCart } from 'react-icons-kit/feather'
-// import { auth } from '../Config/Config'
 
-const Navbar = ({ user, totalProducts }) => {
+const Navbar = ({ user, totalProducts, handleSearch }) => {
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -22,6 +21,9 @@ const Navbar = ({ user, totalProducts }) => {
                 <img src={logo} alt="logo" />
               </Link>
             </div>
+          </div>
+          <div>
+            <input type="text" name="search" className="search" placeholder='Search Product name' onChange={(e) => handleSearch(e.target.value)} />
           </div>
           <div className="rightside">
             {!user && <>

@@ -10,15 +10,7 @@ const Home = () => {
 
   // getting current user uid
   const GetUserUid = () => {
-    // const [uid, setUid] = useState(null)
-    // useEffect(() => {
-    //   auth.onAuthStateChanged(user => {
-    //     if(user){
-    //       setUid(user.uid);
-    //     }
-    //   })
-
-    // }, [])
+    
     // return uid;
   }
   const uid = GetUserUid();
@@ -26,20 +18,7 @@ const Home = () => {
   // getting current user function
   const GetCurrentUser = () => {
     const [user, setUser] = useState(null);
-    // useEffect(() => {
-    //   auth.onAuthStateChanged((user) => {
-    //     if (user) {
-    //       fs.collection("users")
-    //         .doc(user.uid)
-    //         .get()
-    //         .then((snapshot) => {
-    //           setUser(snapshot.data().FullName);
-    //         });
-    //     } else {
-    //       setUser(null);
-    //     }
-    //   });
-    // }, []);
+   
     return user;
   };
   const user = GetCurrentUser();
@@ -50,36 +29,25 @@ const Home = () => {
   // state of products
   const [products, setProducts] = useState([])
 
-  // getting products 
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then(res => res.json())
-      .then(json => {
-        // console.log(json)
-        setProducts(json)
-      })
+  // state
+  const [listedProducts, setListedProducts] = useState()
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
-
+  // sorting state
+  const [sort, setSort] = useState('asc')
 
   // state of totalProducts
   const [totalProducts, setTotalProducts] = useState(0)
-  // getting cart products
-  // useEffect(() => {
-  //   auth.onAuthStateChanged(user => {
-  //     if(user){
-  //       fs.collection('Cart ' + user.uid).onSnapshot(snapshot =>{
-  //         const qty = snapshot.docs.length;
-  //         setTotalProducts(qty)
-  //       })
-  //     }
-  //   })
-  // }, [])
-  // console.log(totalProducts)
 
+  // active class state
+  const [active, setActive] = useState('')
+
+  // category state
+  const [category, setCategory] = useState('')
+
+  
+  // filtered products state
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  
   const navigate = useNavigate();
   let Product;
 
@@ -89,53 +57,47 @@ const Home = () => {
       Product = product
       Product['qty'] = 1
       Product['TotalProductPrice'] = Product['qty'] * Product.price
-      // fs.collection('Cart ' + uid).doc(product.ID).set(Product).then(()=>{
-      //   // console.log("Successfully added to cart!!")
-      //   toast.success(`Your ${product.title} has been added to your cart Successfully!`, {
-      //           position: 'top-right',
-      //           autoClose: 5000,
-      //           hideProgressBar: false,
-      //           closeOnClick: true,
-      //           pauseOnHover: false,
-      //           draggable: false,
-      //           progress: undefined
-      //       })
-      // })
     }
     else {
       navigate('/login')
     }
   }
 
-  // filtered products state
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  // getting products 
+  useEffect(() => {
+    fetch(`https://fakestoreapi.com/products?sort=${sort}`)
+      .then(res => res.json())
+      .then(json => {
+        // console.log(json)
+        setProducts(json)
+        setListedProducts(json)
+      })
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, [sort]);
 
   // categories list rendering using span tag
   const [spans] = useState([
-    { id: 'electronics', text: 'Electronics' },
-    { id: 'jewelery', text: 'Jewelery' },
-    { id: `men's clothing`, text: `Men's Clothing` },
-    { id: `women's clothing`, text: `Women's Clothing` }
+    { id: 'electronics', text: 'Electronics', class: 'electronics'  },
+    { id: 'jewelery', text: 'Jewelery', class: 'jewelery' },
+    { id: `men's clothing`, text: `Men's Clothing`, class: 'mens-clothing' },
+    { id: `women's clothing`, text: `Women's Clothing`, class: 'womens-clothing' }
   ])
-
-  // sorting state
-  const [sort, setSort] = useState('')
-
-  // active class state
-  const [active, setActive] = useState('')
-
-  // category state
-  const [category, setCategory] = useState('')
 
   // handle sorting
   const handleSort = (e) => {
-    e.preventDefault();
-    console.warn(e.target.value)
+    // e.preventDefault();
+    let sortVal = e.target.value;
+    // console.log(e)
+    setSort(sortVal)
+
   }
 
   // handle change
   const handleChange = (individualSpan) => {
-    setActive(individualSpan.id);
+    setActive(individualSpan.class);
     setCategory(individualSpan.text);
     filterFunction(individualSpan.id)
   }
@@ -146,16 +108,23 @@ const Home = () => {
     await fetch(`https://fakestoreapi.com/products/category/${text}`)
       .then(res => res.json())
       .then(json => {
-        // console.warn(json)
-        setFilteredProducts(json);
+        setListedProducts(json)
       })
   }
 
-  const returntoAllProducts = () => {
-    setActive('')
-    setCategory('')
-    setFilteredProducts([])
+  const handleSearch = (text) => {
+    // console.log(text)
+    let searchData = products.filter(
+      product => {
+        return (
+          product.title.toLowerCase()
+            .includes(text.toLowerCase())
+        );
+      }
+    );
+    setListedProducts(searchData)
   }
+
 
   return (
     <>
@@ -172,44 +141,45 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <Navbar user={user} totalProducts={totalProducts} />
+          <Navbar user={user} totalProducts={totalProducts} handleSearch={handleSearch} />
           <br />
           <div className="container-fluid filter-products-main-box">
+            <div className="sorting-filter-section">
             <div className="filter-box">
-              <h6>Filter by category</h6>
-              {spans.map((individualSpan, index) => (
-                <span key={index} id={individualSpan.id} className={individualSpan.id === active ? active : 'deactive'} onClick={() => handleChange(individualSpan)}>{individualSpan.text}</span>
-              ))}
+                <h6>Sorting</h6>
+                <select name="sorting" id="sorting" onChange={handleSort}>
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Descending</option>
+                </select>
+              </div>
+              <div className="filter-box">
+                <h6>Filter by category</h6>
+                {spans.map((individualSpan, index) => (
+                  <span key={index} id={individualSpan.id} className={individualSpan.class === active ? active : 'deactive'} onClick={() => handleChange(individualSpan)}>{individualSpan.text}</span>
+                ))}
+              </div>
             </div>
-            <div className="filter-box">
-              <h6>Sorting</h6>
-              <select name="sorting" id="sorting" value={sort} onChange={handleSort}>
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-              </select>
-
-            </div>
-            {filteredProducts.length > 0 && (
+            
+            {listedProducts.length > 0 && (
               <div className="my-products">
                 <h1 className="text-center">{category}</h1>
-                <a href="/#" onClick={returntoAllProducts}>Return to All Products</a>
                 <div className="products-box">
-                  <Products products={filteredProducts} addToCart={addToCart} />
+                  <Products products={listedProducts} addToCart={addToCart} />
                 </div>
               </div>
             )}
-            {filteredProducts.length < 1 && (
+            {listedProducts.length < 1 && (
               <>
-                {products.length > 0 && (
+                {listedProducts.length > 0 && (
                   <div className="my-products">
                     <h1 className="text-center">All Products</h1>
                     <div className="products-box">
-                      <Products products={products} addToCart={addToCart} />
+                      <Products products={listedProducts} addToCart={addToCart} />
                       <ToastContainer />
                     </div>
                   </div>
                 )}
-                {products < 1 && (
+                {listedProducts < 1 && (
                   <div className="my-products please-wait">
                     Please wait ...
                   </div>

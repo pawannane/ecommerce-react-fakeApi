@@ -14,26 +14,6 @@ const Signup = () => {
     
     const handleSignUp = (e) => {
         e.preventDefault();
-        // console.log(fullName, email, password);
-        // auth.createUserWithEmailAndPassword(email, password).then((credentials) => {
-        //     console.log(credentials)
-        //     fs.collection('users').doc(credentials.user.uid).set({FullName: fullName, Email: email, Passsword: password}).then((res)=>{
-        //         console.log(res)
-        //         setSuccessMsg('Signup Successfull. You will now automatically get redirected to login')
-        //         setFullName('')
-        //         setEmail('')
-        //         setPassword('')
-        //         setErrorMsg('')
-        //         setTimeout(() => {
-        //             setSuccessMsg('');
-        //             navigate('/login')
-        //         }, 2000);
-        //     })
-        // }).catch((error) => {
-        //     setErrorMsg(error.message.slice(10))
-        //     // console.log(error.message.slice(10));
-        //     console.log(error.message);
-        // })
     }
     return (
         <div className='container'>
