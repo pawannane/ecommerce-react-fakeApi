@@ -12,12 +12,13 @@ const Login = () => {
         await fetch('https://fakestoreapi.com/auth/login',{
             method:'POST',
             body:JSON.stringify({
-                username: username,
-                password: password
+                username: `"${username}"`,
+                password: `"${password}"`
             })
         })
-            .then(res=>{console.log(res);res.json()})
+            .then(res=>res.json())
             .then(json=>console.log(json))
+            .catch(err => console.log(err))
     }
     return (
         <div className='container'>
@@ -25,7 +26,7 @@ const Login = () => {
             <br />
             <h1>Login</h1>
             <hr />
-            <form className='form-group' autoComplete='off' onSubmit={handleLogin}>
+            <form className='form-group' autoComplete='off' onSubmit={(e) => handleLogin(e)}>
                 <label htmlFor="username">Username</label>
                 <input type="username" className='form-control' value={username} onChange={(e) => setUsername(e.target.value)} required />
                 <br />

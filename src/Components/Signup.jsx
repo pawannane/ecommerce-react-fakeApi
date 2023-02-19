@@ -8,6 +8,19 @@ const Signup = () => {
     
     const handleSignUp = (e) => {
         e.preventDefault();
+        console.log(fullName, email, password);
+        fetch('https://fakestoreapi.com/users',{
+            method:"POST",
+            body:JSON.stringify(
+                {
+                    fullname: fullName,
+                    email: email,
+                    password: password
+                }
+            )
+        })
+            .then(res=>res.json())
+            .then(json=>console.log(json))
     }
     return (
         <div className='container'>
@@ -15,7 +28,7 @@ const Signup = () => {
             <br />
             <h1>Sign Up</h1>
             <hr />
-            <form className='form-group' autoComplete='off' onSubmit={handleSignUp}>
+            <form className='form-group' autoComplete='off' onSubmit={(e) => handleSignUp(e)}>
                 <label htmlFor="full-name">Full Name</label>
                 <input type="text" className='form-control' value={fullName} onChange={(e) => setFullName(e.target.value)} required />
                 <br />
