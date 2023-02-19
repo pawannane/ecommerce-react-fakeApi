@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-// import { auth, fs } from '../Config/Config'
+import { Link } from 'react-router-dom'
 
 const Signup = () => {
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
-    const [errorMsg, setErrorMsg] = useState('')
-    const [successMsg, setSuccessMsg] = useState('')
-
-    const navigate = useNavigate()
     
     const handleSignUp = (e) => {
         e.preventDefault();
@@ -21,9 +15,6 @@ const Signup = () => {
             <br />
             <h1>Sign Up</h1>
             <hr />
-            {
-                successMsg && <div className="success-msg">{successMsg}</div>
-            }
             <form className='form-group' autoComplete='off' onSubmit={handleSignUp}>
                 <label htmlFor="full-name">Full Name</label>
                 <input type="text" className='form-control' value={fullName} onChange={(e) => setFullName(e.target.value)} required />
@@ -39,9 +30,6 @@ const Signup = () => {
                     <button type='submit' className="btn btn-success btn-md">SIGN UP</button>
                 </div>
             </form>
-            {
-                errorMsg && <div className="error-msg">{errorMsg}</div>
-            }
         </div>
     )
 }

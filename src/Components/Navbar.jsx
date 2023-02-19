@@ -1,16 +1,13 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import logo from '../Images/cart.png'
 import Icon from 'react-icons-kit'
 import { shoppingCart } from 'react-icons-kit/feather'
 
 const Navbar = ({ user, totalProducts, handleSearch }) => {
-  const navigate = useNavigate()
 
   const handleLogout = () => {
-    // auth.signOut().then(() => {
-    //   navigate('/login')
-    // })
+   
   }
 
   return (

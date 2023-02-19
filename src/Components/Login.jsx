@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
-    const [errorMsg, setErrorMsg] = useState('')
-    const [successMsg, setSuccessMsg] = useState('')
-
-    const navigate = useNavigate()
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -30,9 +25,6 @@ const Login = () => {
             <br />
             <h1>Login</h1>
             <hr />
-            {
-                successMsg && <div className="success-msg">{successMsg}</div>
-            }
             <form className='form-group' autoComplete='off' onSubmit={handleLogin}>
                 <label htmlFor="username">Username</label>
                 <input type="username" className='form-control' value={username} onChange={(e) => setUsername(e.target.value)} required />
@@ -45,9 +37,6 @@ const Login = () => {
                     <button type='submit' className="btn btn-success btn-md">LOGIN</button>
                 </div>
             </form>
-            {
-                errorMsg && <div className="error-msg">{errorMsg}</div>
-            }
         </div>
     )
 }

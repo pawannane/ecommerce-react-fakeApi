@@ -1,28 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ColorRing } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Products from "./Products";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
-
-  // getting current user uid
-  const GetUserUid = () => {
-    
-    // return uid;
-  }
-  const uid = GetUserUid();
-
-  // getting current user function
-  const GetCurrentUser = () => {
-    const [user, setUser] = useState(null);
-   
-    return user;
-  };
-  const user = GetCurrentUser();
-  // console.log(user)
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,33 +18,11 @@ const Home = () => {
   // sorting state
   const [sort, setSort] = useState('asc')
 
-  // state of totalProducts
-  const [totalProducts, setTotalProducts] = useState(0)
-
   // active class state
   const [active, setActive] = useState('')
 
   // category state
   const [category, setCategory] = useState('')
-
-  
-  // filtered products state
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  
-  const navigate = useNavigate();
-  let Product;
-
-  const addToCart = (product) => {
-    if (uid !== null) {
-      // console.table(product)
-      Product = product
-      Product['qty'] = 1
-      Product['TotalProductPrice'] = Product['qty'] * Product.price
-    }
-    else {
-      navigate('/login')
-    }
-  }
 
   // getting products 
   useEffect(() => {
@@ -76,11 +37,12 @@ const Home = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+
   }, [sort]);
 
   // categories list rendering using span tag
   const [spans] = useState([
-    { id: 'electronics', text: 'Electronics', class: 'electronics'  },
+    { id: 'electronics', text: 'Electronics', class: 'electronics' },
     { id: 'jewelery', text: 'Jewelery', class: 'jewelery' },
     { id: `men's clothing`, text: `Men's Clothing`, class: 'mens-clothing' },
     { id: `women's clothing`, text: `Women's Clothing`, class: 'womens-clothing' }
@@ -95,11 +57,11 @@ const Home = () => {
 
   }
 
-  // handle change
-  const handleChange = (individualSpan) => {
+  // handle change filter category
+  const handleChange = async (individualSpan) => {
     setActive(individualSpan.class);
     setCategory(individualSpan.text);
-    filterFunction(individualSpan.id)
+    await filterFunction(individualSpan.id)
   }
 
   // filter function
@@ -141,11 +103,11 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <Navbar user={user} totalProducts={totalProducts} handleSearch={handleSearch} />
+          <Navbar handleSearch={handleSearch} />
           <br />
           <div className="container-fluid filter-products-main-box">
             <div className="sorting-filter-section">
-            <div className="filter-box">
+              <div className="filter-box">
                 <h6>Sorting</h6>
                 <select name="sorting" id="sorting" onChange={handleSort}>
                   <option value="asc">Ascending</option>
@@ -159,12 +121,12 @@ const Home = () => {
                 ))}
               </div>
             </div>
-            
+
             {listedProducts.length > 0 && (
               <div className="my-products">
                 <h1 className="text-center">{category}</h1>
                 <div className="products-box">
-                  <Products products={listedProducts} addToCart={addToCart} />
+                  <Products products={listedProducts} />
                 </div>
               </div>
             )}
@@ -174,7 +136,7 @@ const Home = () => {
                   <div className="my-products">
                     <h1 className="text-center">All Products</h1>
                     <div className="products-box">
-                      <Products products={listedProducts} addToCart={addToCart} />
+                      <Products products={listedProducts} />
                       <ToastContainer />
                     </div>
                   </div>
